@@ -50,23 +50,29 @@ class _LTTimerApp extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    RaisedButton(
-                      child: Text("START"),
-                      onPressed: timer.isRunning ? null : () => timer.start(),
+                    RaisedButton.icon(
+                      onPressed: () =>
+                          timer.isRunning ? timer.stop() : timer.start(),
+                      icon: Icon(
+                        timer.isRunning ? Icons.stop : Icons.play_arrow,
+                        color: Colors.white,
+                      ),
+                      label: Text(timer.isRunning ? 'STOP' : 'START'),
+                      color: Colors.green,
+                      textColor: Colors.white,
                     ),
                     SizedBox(
-                      width: 32,
+                      width: 128,
                     ),
-                    RaisedButton(
-                      child: Text("STOP"),
-                      onPressed: timer.isRunning ? () => timer.stop() : null,
-                    ),
-                    SizedBox(
-                      width: 32,
-                    ),
-                    RaisedButton(
-                      child: Text("RELOAD"),
+                    RaisedButton.icon(
                       onPressed: timer.isRunning ? null : () => timer.reset(),
+                      icon: Icon(
+                        Icons.refresh,
+                        color: Colors.white,
+                      ),
+                      label: Text('RELOAD'),
+                      color: Colors.green,
+                      textColor: Colors.white,
                     ),
                   ],
                 )
