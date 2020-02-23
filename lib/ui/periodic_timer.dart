@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 
 ///
@@ -20,6 +21,7 @@ class PeriodicTimer with ChangeNotifier {
   PeriodicTimer(double initTimer) {
     this._initTimer = initTimer;
     this._timer = initTimer;
+    this._audioPlayer.open('assets/audios/dora.mp3');
   }
 
   /// 初期タイマ時間
@@ -37,6 +39,8 @@ class PeriodicTimer with ChangeNotifier {
   /// タイマ稼働フラグの取得
   TimerState get runningState => _stateRunning;
 
+  final _audioPlayer = AssetsAudioPlayer();
+
   ///
   /// タイマを開始する
   void start() {
@@ -51,7 +55,9 @@ class PeriodicTimer with ChangeNotifier {
         // 残り時間がなくなった、または、タイマが実行中ではない場合はタイマを停止する
         if (_timer <= 0 || _stateRunning != TimerState.Running) {
           if (_timer <= 0) {
+            // 残り時間が0の場合はドラを鳴らす（終了）
             _stateRunning = TimerState.End;
+            _audioPlayer.play();
             notifyListeners();
           }
           timer.cancel();
@@ -68,15 +74,16 @@ class PeriodicTimer with ChangeNotifier {
     _stateRunning = TimerState.Stop;
   }
 
-  /// タイマをリセットする(稼働中のタイマも停止する)
+  ///
+  /// タイマをリセットする
   void reset() {
-    _stateRunning = TimerState.Stop;
-    notifyListeners();
     _timer = _initTimer;
     _stateRunning = TimerState.Ready;
     notifyListeners();
   }
 
+  ///
+  /// 残り時間を「99:99」形式の文字列で返す
   @override
   String toString() {
     if (_timer == null) {
