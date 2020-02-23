@@ -3,6 +3,15 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 ///
+/// タイマ状態を表す列挙型
+enum TimerState {
+  Ready, // 実行待ち
+  Running, // 実行中
+  Stop, // 停止中
+  End, // 終了
+}
+
+///
 /// 定時タイマクラス
 class PeriodicTimer with ChangeNotifier {
   ///
@@ -20,25 +29,31 @@ class PeriodicTimer with ChangeNotifier {
   double _timer = 0;
 
   /// タイマ稼働フラグ(true=稼働中 : false=停止中)
-  var _isRunning = false;
+  TimerState _stateRunning = TimerState.Ready;
 
   /// 残り時間の取得
   double get time => _timer;
 
   /// タイマ稼働フラグの取得
-  bool get isRunning => _isRunning;
+  TimerState get runningState => _stateRunning;
 
   ///
   /// タイマを開始する
   void start() {
     // タイマが停止中、かつ、残り時間が0秒より多い場合にタイマ開始
-    if (!_isRunning && _timer > 0) {
-      _isRunning = true;
+    if ((_stateRunning == TimerState.Ready ||
+            _stateRunning == TimerState.Stop) &&
+        _timer > 0) {
+      _stateRunning = TimerState.Running;
 
       // 100ミリ秒毎に残り時間を減らす
       Timer.periodic(Duration(milliseconds: 100), (timer) {
-        // 残り時間がなくなった、または、タイマ稼働中フラグがfalseの場合はタイマを停止する
-        if (_timer <= 0 || !_isRunning) {
+        // 残り時間がなくなった、または、タイマが実行中ではない場合はタイマを停止する
+        if (_timer <= 0 || _stateRunning != TimerState.Running) {
+          if (_timer <= 0) {
+            _stateRunning = TimerState.End;
+            notifyListeners();
+          }
           timer.cancel();
         }
         _timer -= 0.1;
@@ -50,14 +65,15 @@ class PeriodicTimer with ChangeNotifier {
   ///
   /// タイマを停止する
   void stop() {
-    _isRunning = false;
+    _stateRunning = TimerState.Stop;
   }
 
   /// タイマをリセットする(稼働中のタイマも停止する)
   void reset() {
-    _isRunning = false;
+    _stateRunning = TimerState.Stop;
     notifyListeners();
     _timer = _initTimer;
+    _stateRunning = TimerState.Ready;
     notifyListeners();
   }
 

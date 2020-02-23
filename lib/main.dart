@@ -3,6 +3,10 @@ import 'package:lttimer/ui/header.dart';
 import 'package:lttimer/ui/periodic_timer.dart';
 import 'package:provider/provider.dart';
 
+import 'ui/periodic_timer.dart';
+
+typedef ButtonEventFunc = void Function();
+
 void main() {
   runApp(LTTimerApp());
 }
@@ -24,6 +28,29 @@ class LTTimerApp extends StatelessWidget {
 }
 
 class _LTTimerApp extends StatelessWidget {
+  ///
+  /// ボタンイベント定義
+  List _buttonEventHandler(PeriodicTimer timer) {
+    ButtonEventFunc _func1;
+    ButtonEventFunc _func2;
+
+    switch (timer.runningState) {
+      case TimerState.Ready:
+        _func1 = timer.start;
+        return [_func1, Icons.play_arrow, 'START', _func2];
+      case TimerState.Running:
+        _func1 = timer.stop;
+        return [_func1, Icons.stop, 'STOP', _func2];
+      case TimerState.Stop:
+        _func1 = timer.start;
+        _func2 = timer.reset;
+        return [_func1, Icons.play_arrow, 'START', _func2];
+      default:
+        _func2 = timer.reset;
+        return [_func1, Icons.play_arrow, 'START', _func2];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<PeriodicTimer>(
@@ -50,22 +77,55 @@ class _LTTimerApp extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
+                    // 開始・停止
                     RaisedButton.icon(
-                      onPressed: () =>
-                          timer.isRunning ? timer.stop() : timer.start(),
+                      onPressed: _buttonEventHandler(timer)[0] == null
+                          ? null
+                          : () => _buttonEventHandler(timer)[0](),
+//                      onPressed: () => timer.runningState == TimerState.Ready
+//                          ? timer.start()
+//                          : timer.runningState == TimerState.Running
+//                              ? timer.stop()
+//                              : timer.runningState == TimerState.Stop
+//                                  ? timer.start()
+//                                  : null,
                       icon: Icon(
-                        timer.isRunning ? Icons.stop : Icons.play_arrow,
+                        _buttonEventHandler(timer)[1],
+//                        timer.runningState == TimerState.Ready
+//                            ? Icons.play_arrow
+//                            : timer.runningState == TimerState.Running
+//                                ? Icons.stop
+//                                : timer.runningState == TimerState.Stop
+//                                    ? Icons.play_arrow
+//                                    : Icons.play_arrow,
                         color: Colors.white,
                       ),
-                      label: Text(timer.isRunning ? 'STOP' : 'START'),
+                      label: Text(_buttonEventHandler(timer)[2]),
+//                      label: Text(timer.runningState == TimerState.Ready
+//                          ? 'START'
+//                          : timer.runningState == TimerState.Running
+//                              ? 'STOP'
+//                              : timer.runningState == TimerState.End
+//                                  ? 'START'
+//                                  : 'START'),
                       color: Colors.green,
                       textColor: Colors.white,
                     ),
                     SizedBox(
                       width: 128,
                     ),
+                    // リセット
                     RaisedButton.icon(
-                      onPressed: timer.isRunning ? null : () => timer.reset(),
+                      onPressed: _buttonEventHandler(timer)[3] == null
+                          ? null
+                          : () => _buttonEventHandler(timer)[3](),
+//                      onPressed: timer.runningState == TimerState.Ready
+//                          ? null
+//                          : timer.runningState == TimerState.Running
+//                              ? null
+//                              : timer.runningState == TimerState.Stop
+//                                  ? () => timer.reset()
+//                                  : () => timer.reset(),
                       icon: Icon(
                         Icons.refresh,
                         color: Colors.white,
