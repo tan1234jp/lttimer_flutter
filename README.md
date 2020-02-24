@@ -1,16 +1,89 @@
-# lttimer
+# LT-Timer for Flutter
 
-Lightning-Talk Timer Application
+Lightning-Talk Timer Application.
+
+## インストール・設定
+
+[公式ページ](https://flutter.dev/docs/get-started/install)の手順に従ってインストール・設定してください。なお、web applicationのビルドには追加で[こちら](https://flutter.dev/docs/get-started/web)の設定が必要となります。
+
+### ビルドおよび実行方法
+
+- [Github](https://github.com/tan1234jp/lttimer_flutter)からリポジトリをクローン、または[ZIPファイル](https://github.com/tan1234jp/lttimer_flutter/archive/master.zip)をダウンロードし、解凍します。
+
+  ```sh
+  $ git clone https://github.com/tan1234jp/lttimer_flutter.git
+  ```
+
+- プロジェクトで使用しているパッケージを更新します。
+
+  ```sh
+  $ cd <プロジェクト名>
+  $ flutter package pub
+  ```
+
+- プロジェクトをビルドします。
+
+  ```sh
+  $ flutter build <android/ios/web>
+  ```
+
+  
+
+------
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+- [Get the Flutter SDK](https://flutter.dev/docs/get-started/install)
+- If you want to build a web application, you have to get the latest version of the Flatter SDK from the beta channel and enable web support. Setting up is [here](https://flutter.dev/docs/get-started/web).
 
-A few resources to get you started if this is your first Flutter project:
+## Build and Run
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+- Get the repository from [Github](https://github.com/tan1234jp/lttimer_flutter) or [download ZIP archive](https://github.com/tan1234jp/lttimer_flutter/archive/master.zip) and extract to your computer.
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+  ```sh
+  $ git clone https://github.com/tan1234jp/lttimer_flutter.git
+  ```
+
+- Update package libraries.
+
+  ```sh
+  $ cd <project directory name here>
+  $ flutter package pub
+  ```
+
+- Build projects.
+
+  ```sh
+  $ flutter build <android/ios/web>
+  ```
+
+------
+
+### Desktop
+
+| Browser             | Version                       | Condition  |
+| ------------------- | ----------------------------- | ---------- |
+| Chrome              | 80.0.3987.116(64bit)          | TESTED     |
+| Firefox             | 72.0.2 (64bit)                | NOT TESTED |
+| Internet Explorer   | 11.535.18362.0(11.0.165)      | NOT TESTED |
+| Microsoft Edge      | 44.18362.449.0(HTML 18.18362) | NOT TESTED |
+| Safari (MacOS ONLY) |                               | NOT TESTED |
+|                     |                               |            |
+
+### Mobile(Native)
+
+| OS      | Version           | Condition  |
+| ------- | ----------------- | ---------- |
+| Android | 8.1(API Level 26) | TESTED     |
+| iOS     | 13.1              | NOT TESTED |
+| iPadOS  | 13.1              | NOT TESTED |
+|         |                   |            |
+
+### Mobile(Web)
+
+| Browser | Version | Condition  |
+| ------- | ------- | ---------- |
+| Chrome  |         | NOT TESTED |
+| Safari  |         | NOT TESTED |
+|         |         |            |
+
