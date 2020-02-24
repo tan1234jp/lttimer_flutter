@@ -75,6 +75,6 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
   fonts:
-    - family: DSEG7Classic-Regular
+    - family: DSEG14Classic-Regular
       fonts:
-        - asset: assets/fonts/DSEG7Classic-Regular.ttf
+        - asset: assets/fonts/DSEG14Classic-Regular.ttf

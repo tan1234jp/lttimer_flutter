@@ -67,7 +67,7 @@ class _LTTimerApp extends StatelessWidget {
                 Text(
                   timer.toString(),
                   style: TextStyle(
-                    fontFamily: 'DSEG7Classic-Regular',
+                    fontFamily: 'DSEG14Classic-Regular',
                     fontSize: 60,
                     color: timer.time < 60
                         ? Colors.red

@@ -90,6 +90,9 @@ class PeriodicTimer with ChangeNotifier {
       return '';
     }
 
+    if (_timer <= 0) {
+      return 'TIME UP!';
+    }
     int minutes = _timer ~/ 60;
     int seconds = (_timer - minutes * 60) ~/ 1;
     return (minutes.toString().padLeft(2, "0") +
