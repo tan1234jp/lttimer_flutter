@@ -24,7 +24,7 @@ Lightning-Talk Timer Application.
 - プロジェクトをビルドします。
 
   ```sh
-  $ flutter build <android/ios/web>
+  $ flutter build <apk/ios/web>
   ```
 
   
@@ -54,7 +54,7 @@ Lightning-Talk Timer Application.
 - Build projects.
 
   ```sh
-  $ flutter build <android/ios/web>
+  $ flutter build <apk/ios/web>
   ```
 
 ------
