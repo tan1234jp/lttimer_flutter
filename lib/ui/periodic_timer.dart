@@ -38,6 +38,11 @@ class PeriodicTimer with ChangeNotifier {
   /// 残り時間の取得
   int get time => _timer;
 
+  void set time(int _timer) {
+    this._initTimer = _timer * 60000;
+    this._timer = _timer * 60000;
+  }
+
   /// タイマ稼働フラグの取得
   TimerState get runningState => _stateRunning;
 
