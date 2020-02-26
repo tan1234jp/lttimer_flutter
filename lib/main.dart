@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lttimer/ui/header.dart';
 import 'package:lttimer/ui/periodic_timer.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'ui/periodic_timer.dart';
 
@@ -15,6 +16,18 @@ void main() => runApp(LTTimerApp());
 ///
 /// アプリケーションメインクラス
 class LTTimerApp extends StatelessWidget {
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  Future<int> _prefsGetTimerValue() async {
+    final SharedPreferences prefs = await _prefs;
+    return (prefs.getInt('timer') ?? 5) * 60000;
+  }
+
+//  Future<void> _prefsTimerValue(String value) async {
+//    final SharedPreferences prefs = await _prefs;
+//    prefs.setInt('timer', int.parse(value)).then((bool success) {});
+//  }
+
   @override
   Widget build(BuildContext context) {
     // マテリアルデザインを使用
@@ -26,7 +39,11 @@ class LTTimerApp extends StatelessWidget {
       ),
       home: ChangeNotifierProvider(
         // タイマプロバイダの初期化
-        create: (context) => PeriodicTimer(300000), // 300000ms = 300s = 5m
+        create: (context) {
+          _prefsGetTimerValue().then((result) {
+            return PeriodicTimer(result);
+          });
+        },
         child: _LTTimerApp(),
       ),
     );
