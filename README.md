@@ -59,14 +59,23 @@ Lightning-Talk Timer Application.
 
 ------
 
+## Running information
+
+### Flatter & Dart version
+
+| SDK  | Version |
+|---|---|
+| Flatter  | 1.14.6 (Channel beta)|
+| Dart | 2.8.0|
+
 ### Desktop
 
 | Browser             | Version                       | Condition  |
 | ------------------- | ----------------------------- | ---------- |
-| Chrome              | 80.0.3987.116(64bit)          | TESTED     |
-| Firefox             | 72.0.2 (64bit)                | NOT TESTED |
-| Internet Explorer   | 11.535.18362.0(11.0.165)      | NOT TESTED |
-| Microsoft Edge      | 44.18362.449.0(HTML 18.18362) | NOT TESTED |
+| Chrome              | 80.0.3987.122(64bit)          | RUNNING    |
+| Firefox             | 72.0.2 (64bit)                | RUNNING |
+| Internet Explorer   | 11.535.18362.0(11.0.165)      | <font color='red'>NOT RUNNING</font> |
+| Microsoft Edge      | 44.18362.449.0(HTML 18.18362) | RUNNING |
 | Safari (MacOS ONLY) |                               | NOT TESTED |
 |                     |                               |            |
 
@@ -74,9 +83,9 @@ Lightning-Talk Timer Application.
 
 | OS      | Version           | Condition  |
 | ------- | ----------------- | ---------- |
-| Android | 8.1(API Level 26) | TESTED     |
-| iOS     | 13.1              | NOT TESTED |
-| iPadOS  | 13.1              | NOT TESTED |
+| Android | 8.1(API Level 26) | RUNNING    |
+| iOS     | 13.1.3            | NOT TESTED |
+| iPadOS  | 13.1.3            | NOT TESTED |
 |         |                   |            |
 
 ### Mobile(Web)
