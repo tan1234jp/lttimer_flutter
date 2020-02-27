@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:lttimer/ui/header.dart';
-import 'package:lttimer/ui/periodic_timer.dart';
 import 'package:provider/provider.dart';
 import 'package:tuple/tuple.dart';
 
-import 'ui/periodic_timer.dart';
+import 'periodic_timer.dart';
 
-/// 関数オブジェクトの定義
+/// ボタン押下時に呼び出す関数オブジェクトの定義
 typedef ButtonEventFunc = void Function();
 
 ///
@@ -16,6 +15,10 @@ void main() => runApp(LTTimerApp());
 ///
 /// アプリケーションメインクラス
 class LTTimerApp extends StatelessWidget {
+  ///
+  /// UIを生成する
+  /// @param context: BuildContext
+  /// @return 生成されたUIウィジェットオブジェクト
   @override
   Widget build(BuildContext context) {
     // マテリアルデザインを使用
@@ -39,6 +42,8 @@ class LTTimerApp extends StatelessWidget {
 class _LTTimerApp extends StatelessWidget {
   ///
   /// ボタンイベント定義
+  /// @param context: BuildContext
+  /// @return ボタンイベントに必要なオブジェクトが格納されたタプル(ボタン押下時に呼び出すメソッド、表示するアイコン、表示するボタン文字列)
   Tuple3<ButtonEventFunc, IconData, String> _buttonEventHandler(
       PeriodicTimer timer) {
     ButtonEventFunc _func1;
@@ -57,7 +62,9 @@ class _LTTimerApp extends StatelessWidget {
   }
 
   ///
-  /// ボタンウィジェット
+  /// ボタンウィジェットを生成する
+  /// @param timer: PeriodicTimer
+  /// @return 生成されたUIウィジェットオブジェクト
   Widget _createButton(PeriodicTimer timer) {
     //　タイマが実行中の時は、空のコンテナを返す(=ボタン非表示)
     if (timer.runningState == TimerState.running) {
@@ -83,8 +90,9 @@ class _LTTimerApp extends StatelessWidget {
     );
   }
 
-  // アプリケーションのUIを生成する
-  // @param context BuildContext
+  /// アプリケーションのUIを生成する
+  /// @param context BuildContext
+  /// @return 生成されたUIウィジェットオブジェクト
   @override
   Widget build(BuildContext context) {
     // PeriodicTimerクラスをシグナルに持ったUIを返す

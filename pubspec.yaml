@@ -26,6 +26,7 @@ dependencies:
   provider: ^4.0.4
   assets_audio_player: ^1.2.3
   tuple: ^1.0.3
+  charts_flutter: ^0.8.1
 
 dev_dependencies:
   flutter_test:
