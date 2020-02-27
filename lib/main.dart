@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lttimer/ui/header.dart';
 import 'package:lttimer/ui/periodic_timer.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tuple/tuple.dart';
 
 import 'ui/periodic_timer.dart';
 
@@ -16,18 +16,6 @@ void main() => runApp(LTTimerApp());
 ///
 /// アプリケーションメインクラス
 class LTTimerApp extends StatelessWidget {
-  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
-  Future<int> _prefsGetTimerValue() async {
-    final SharedPreferences prefs = await _prefs;
-    return (prefs.getInt('timer') ?? 5) * 60000;
-  }
-
-//  Future<void> _prefsTimerValue(String value) async {
-//    final SharedPreferences prefs = await _prefs;
-//    prefs.setInt('timer', int.parse(value)).then((bool success) {});
-//  }
-
   @override
   Widget build(BuildContext context) {
     // マテリアルデザインを使用
@@ -39,11 +27,7 @@ class LTTimerApp extends StatelessWidget {
       ),
       home: ChangeNotifierProvider(
         // タイマプロバイダの初期化
-        create: (context) {
-          _prefsGetTimerValue().then((result) {
-            return PeriodicTimer(result);
-          });
-        },
+        create: (context) => PeriodicTimer(5 * 60 * 1000),
         child: _LTTimerApp(),
       ),
     );
@@ -55,19 +39,20 @@ class LTTimerApp extends StatelessWidget {
 class _LTTimerApp extends StatelessWidget {
   ///
   /// ボタンイベント定義
-  List _buttonEventHandler(PeriodicTimer timer) {
+  Tuple3<ButtonEventFunc, IconData, String> _buttonEventHandler(
+      PeriodicTimer timer) {
     ButtonEventFunc _func1;
 
     // タイマ状態によりボタン押下時の処理を分岐する
     switch (timer.runningState) {
-      case TimerState.Ready: // タイマ開始準備完了
+      case TimerState.ready: // タイマ開始準備完了
         _func1 = timer.start; // ボタン押下時にstart()を呼び出す
-        return [_func1, Icons.play_arrow, 'START'];
-      case TimerState.Running: // タイマ実行中
-        return [_func1, Icons.stop, ''];
+        return Tuple3(_func1, Icons.play_arrow, 'START');
+      case TimerState.running: // タイマ実行中
+        return Tuple3(_func1, Icons.stop, '');
       default: // その他(タイマ終了)
         _func1 = timer.reset; // ボタン押下時にreset()を呼び出す
-        return [_func1, Icons.refresh, 'RESET'];
+        return Tuple3(_func1, Icons.refresh, 'RESET');
     }
   }
 
@@ -75,22 +60,22 @@ class _LTTimerApp extends StatelessWidget {
   /// ボタンウィジェット
   Widget _createButton(PeriodicTimer timer) {
     //　タイマが実行中の時は、空のコンテナを返す(=ボタン非表示)
-    if (timer.runningState == TimerState.Running) {
+    if (timer.runningState == TimerState.running) {
       return Container();
     }
 
     // ボタンウィジェットを返す
     return RaisedButton.icon(
       // ボタン押下処理
-      onPressed: _buttonEventHandler(timer)[0] == null
+      onPressed: _buttonEventHandler(timer).item1 == null
           ? null
-          : () => _buttonEventHandler(timer)[0](),
+          : () => _buttonEventHandler(timer).item1(),
       // ボタン内に表示するアイコン定義
       icon: Icon(
-        _buttonEventHandler(timer)[1],
+        _buttonEventHandler(timer).item2,
       ),
       // ボタン内に表示する文字列
-      label: Text(_buttonEventHandler(timer)[2]),
+      label: Text(_buttonEventHandler(timer).item3),
       // ボタン色（背景色）
       color: Colors.green,
       // ボタン色（アイコン・文字列）

@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 ///
 /// タイマ状態を表す列挙型
 enum TimerState {
-  Ready, // 実行待ち
-  Running, // 実行中
-  End, // 終了
+  ready, // 実行待ち
+  running, // 実行中
+  end, // 終了
 }
 
 ///
@@ -16,7 +16,7 @@ enum TimerState {
 class PeriodicTimer with ChangeNotifier {
   ///
   /// コンストラクタ
-  /// @param _initTimer 初期タイマ時間(msec)
+  /// @param _initTimer 初期タイマ時間(ミリ秒)
   PeriodicTimer(int initTimer) {
     this._initTimer = initTimer;
     this._timer = initTimer;
@@ -33,7 +33,7 @@ class PeriodicTimer with ChangeNotifier {
   int _timer = 0;
 
   /// タイマ稼働フラグ(true=稼働中 : false=停止中)
-  TimerState _stateRunning = TimerState.Ready;
+  TimerState _stateRunning = TimerState.ready;
 
   /// 残り時間の取得
   int get time => _timer;
@@ -54,15 +54,15 @@ class PeriodicTimer with ChangeNotifier {
   /// タイマを開始する
   void start() {
     // タイマ開始
-    if (_stateRunning == TimerState.Ready) {
-      _stateRunning = TimerState.Running;
+    if (_stateRunning == TimerState.ready) {
+      _stateRunning = TimerState.running;
       _currentDateTime = DateTime.now().millisecondsSinceEpoch;
 
       // 100ミリ秒毎に残り時間を減らす
       Timer.periodic(Duration(milliseconds: 100), (timer) {
         // 残り時間がなくなった場合はタイマを停止する
         if (_timer <= 0) {
-          _stateRunning = TimerState.End;
+          _stateRunning = TimerState.end;
           // ドラを鳴らす（終了）
           _audioPlayer.play();
           timer.cancel();
@@ -80,7 +80,7 @@ class PeriodicTimer with ChangeNotifier {
   /// タイマをリセットする
   void reset() {
     _timer = _initTimer;
-    _stateRunning = TimerState.Ready;
+    _stateRunning = TimerState.ready;
     notifyListeners();
   }
 
@@ -97,11 +97,11 @@ class PeriodicTimer with ChangeNotifier {
     }
     int minutes = _timer ~/ 60000;
     int seconds = (_timer - minutes * 60000) ~/ 1000;
-    int dseconds = (_timer % 1000) ~/ 100;
+    int deciSeconds = (_timer % 1000) ~/ 100;
     return minutes.toString().padLeft(2, "0") +
         ":" +
         seconds.toString().padLeft(2, "0") +
         "." +
-        dseconds.toString();
+        deciSeconds.toString();
   }
 }
