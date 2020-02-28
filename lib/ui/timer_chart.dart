@@ -9,7 +9,14 @@ class GaugeSegment {
   GaugeSegment(this.segment, this.size);
 }
 
-class TimerChart extends StatelessWidget {
+class TimerChart extends StatefulWidget {
+  TimerChart({Key key}) : super(key: key);
+
+  @override
+  _TimerChart createState() => _TimerChart();
+}
+
+class _TimerChart extends State<TimerChart> {
   void setData(String title, int value) {
     if (seriesList != null) {
       seriesList.clear();
@@ -17,17 +24,19 @@ class TimerChart extends StatelessWidget {
       seriesList = List<charts.Series>();
     }
 
-    seriesList = [
-      charts.Series<GaugeSegment, String>(
-        id: 'Segments',
-        domainFn: (segment, _) => segment.segment,
-        measureFn: (segment, _) => segment.size,
-        data: [
-          GaugeSegment('Low', 80),
-          GaugeSegment('High', 20),
-        ],
-      )
-    ];
+    setState(() {
+      seriesList = [
+        charts.Series<GaugeSegment, String>(
+          id: 'Segments',
+          domainFn: (segment, _) => segment.segment,
+          measureFn: (segment, _) => segment.size,
+          data: [
+            GaugeSegment('Low', 80),
+            GaugeSegment('High', 20),
+          ],
+        )
+      ];
+    });
   }
 
   List<charts.Series> seriesList;
