@@ -1,7 +1,8 @@
 import 'dart:async';
 
-import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:soundpool/soundpool.dart';
 
 ///
 /// タイマ状態を表す列挙型
@@ -20,7 +21,8 @@ class PeriodicTimer with ChangeNotifier {
   PeriodicTimer(int initTimer) {
     this._initTimer = initTimer;
     this._timer = initTimer;
-    this._audioPlayer.open('assets/audios/dora.mp3');
+//    this._audioPlayer.open('assets/audios/dora.mp3');
+    _soundId = _loadSound('assets/audios/dora.mp3');
   }
 
   /// 初期タイマ時間
@@ -48,7 +50,10 @@ class PeriodicTimer with ChangeNotifier {
   TimerState get runningState => _stateRunning;
 
   // 残り時間がなくなった時に鳴らす効果音
-  final _audioPlayer = AssetsAudioPlayer();
+//  final _audioPlayer = AssetsAudioPlayer();
+  final _soundPool = Soundpool();
+  Future<int> _soundId;
+  int _alarmSoundStreamId;
 
   ///
   /// タイマを開始する
@@ -64,7 +69,8 @@ class PeriodicTimer with ChangeNotifier {
         if (_timer <= 0) {
           _stateRunning = TimerState.end;
           // ドラを鳴らす（終了）
-          _audioPlayer.play();
+//          _audioPlayer.play();
+          _playSound();
           timer.cancel();
           notifyListeners();
         }
@@ -81,6 +87,8 @@ class PeriodicTimer with ChangeNotifier {
   void reset() {
     _timer = _initTimer;
     _stateRunning = TimerState.ready;
+//    _audioPlayer.stop();
+    _stopSound();
     notifyListeners();
   }
 
@@ -103,5 +111,21 @@ class PeriodicTimer with ChangeNotifier {
         seconds.toString().padLeft(2, "0") +
         "." +
         deciSeconds.toString();
+  }
+
+  Future<int> _loadSound(String url) async {
+    var asset = await rootBundle.load(url);
+    return await _soundPool.load(asset);
+  }
+
+  Future<void> _playSound() async {
+    var _alarmSound = await _soundId;
+    _alarmSoundStreamId = await _soundPool.play(_alarmSound);
+  }
+
+  Future<void> _stopSound() async {
+    if (_alarmSoundStreamId != null) {
+      await _soundPool.stop(_alarmSoundStreamId);
+    }
   }
 }
