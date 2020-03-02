@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lttimer/ui/header.dart';
 import 'package:lttimer/ui/timer_painter.dart';
+import 'package:soundpool/soundpool.dart';
 
 ///
 /// カウントダウンタイマクラス
@@ -32,6 +34,14 @@ class _CountDownTimer extends State<CountDownTimer>
   final Duration duration;
   // アニメーションコントロール
   AnimationController animationController;
+  Soundpool _soundPool;
+  Future<Map<String, int>> _soundId;
+  int _alarmSoundStreamId;
+
+  var _soundsMap = {
+    'silent': 'assets/audios/silent.mp3',
+    'dora': 'assets/audios/dora.mp3',
+  };
 
   ///
   /// 残り時間を「99:99.9」形式の文字列で返す
@@ -47,9 +57,30 @@ class _CountDownTimer extends State<CountDownTimer>
   void initState() {
     super.initState();
     // アニメーションのインスタンスを生成する（5分で終了）
-    animationController = AnimationController(vsync: this, duration: duration);
+    animationController = AnimationController(vsync: this, duration: duration)
+      ..addStatusListener((status) {
+        // アニメーションの状態変更通知
+        if (status == AnimationStatus.completed) {
+          if (_alarmSoundStreamId != null) {
+            _stopSound();
+          }
+          // アニメーション終了通知
+          if (animationController.value == 0.0) {
+            _playSound('dora');
+          }
+        }
+      });
     // 初期値を1.0(100%)に設定
     animationController.value = 1.0;
+    _soundPool = Soundpool();
+    _soundId = _loadSound(_soundsMap);
+  }
+
+  @override
+  void dispose() {
+    animationController.dispose();
+    _soundPool.dispose();
+    super.dispose();
   }
 
   ///
@@ -143,6 +174,7 @@ class _CountDownTimer extends State<CountDownTimer>
                               : Icons.play_arrow);
                         }),
                     onPressed: () {
+                      _playSound('silent');
                       if (animationController.isAnimating) {
                         animationController.stop();
                       } else {
@@ -161,5 +193,33 @@ class _CountDownTimer extends State<CountDownTimer>
         ),
       ),
     );
+  }
+
+  Future<Map<String, int>> _loadSound(Map<String, String> soundMap) async {
+    Map<String, int> soundIdMap = Map<String, int>();
+    soundMap.forEach((key, value) async {
+      var asset = await rootBundle.load(value);
+      int id = await _soundPool.load(asset);
+      soundIdMap.putIfAbsent(key, () => id);
+    });
+
+    return soundIdMap;
+  }
+
+  Future<void> _playSound(String types) async {
+    if (_soundId != null) {
+      var _alarmSound =
+          await _soundId.then((value) => (value == null ? null : value[types]));
+      if (_alarmSound != null) {
+        _alarmSoundStreamId = await _soundPool.play(_alarmSound);
+      }
+    }
+  }
+
+  Future<void> _stopSound() async {
+    if (_alarmSoundStreamId != null) {
+      await _soundPool.stop(_alarmSoundStreamId);
+      _alarmSoundStreamId = null;
+    }
   }
 }
