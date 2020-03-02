@@ -32,13 +32,21 @@ class _CountDownTimer extends State<CountDownTimer>
 
   /// タイマ初期時間
   final Duration duration;
-  // アニメーションコントロール
+
+  /// アニメーションコントロール
   AnimationController animationController;
+
+  /// サウンドプールオブジェクト
   Soundpool _soundPool;
+
+  /// サウンドプールに読み込まれたサウンドIDオブジェクト
   Future<Map<String, int>> _soundId;
+
+  /// 再生中のサウンドIDオブジェクト
   int _alarmSoundStreamId;
 
-  var _soundsMap = {
+  /// サウンドマップ定義
+  var _soundsMap = <String, String>{
     'silent': 'assets/audios/silent.mp3',
     'dora': 'assets/audios/dora.mp3',
   };
@@ -76,6 +84,8 @@ class _CountDownTimer extends State<CountDownTimer>
     _soundId = _loadSound(_soundsMap);
   }
 
+  ///
+  /// オブジェクト破棄処理
   @override
   void dispose() {
     animationController.dispose();
@@ -174,7 +184,7 @@ class _CountDownTimer extends State<CountDownTimer>
                               : Icons.play_arrow);
                         }),
                     onPressed: () {
-                      _playSound('silent');
+                      _playSound('silent'); // iOS(iPadOS)でサウンド再生されない対策
                       if (animationController.isAnimating) {
                         animationController.stop();
                       } else {
@@ -195,9 +205,14 @@ class _CountDownTimer extends State<CountDownTimer>
     );
   }
 
+  ///
+  /// サウンドデータをロードする
+  /// @param soundMap : <Key,assetファイル名>のMapオブジェクト
+  /// @return Future<Map<String int>> : <Key,読みこんだサウンドデータのID>のMapオブジェクト
   Future<Map<String, int>> _loadSound(Map<String, String> soundMap) async {
-    Map<String, int> soundIdMap = Map<String, int>();
+    var soundIdMap = <String, int>{};
     soundMap.forEach((key, value) async {
+      // assetからサウンドデータを読み込む
       var asset = await rootBundle.load(value);
       int id = await _soundPool.load(asset);
       soundIdMap.putIfAbsent(key, () => id);
@@ -206,6 +221,9 @@ class _CountDownTimer extends State<CountDownTimer>
     return soundIdMap;
   }
 
+  ///
+  /// サウンドを再生する
+  /// @param key : 再生するサウンドのキー文字列
   Future<void> _playSound(String types) async {
     if (_soundId != null) {
       var _alarmSound =
@@ -216,6 +234,8 @@ class _CountDownTimer extends State<CountDownTimer>
     }
   }
 
+  ///
+  /// サウンドを停止する
   Future<void> _stopSound() async {
     if (_alarmSoundStreamId != null) {
       await _soundPool.stop(_alarmSoundStreamId);
