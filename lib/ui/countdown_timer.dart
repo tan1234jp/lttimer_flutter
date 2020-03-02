@@ -213,9 +213,13 @@ class _CountDownTimer extends State<CountDownTimer>
     var soundIdMap = <String, int>{};
     soundMap.forEach((key, value) async {
       // assetからサウンドデータを読み込む
-      var asset = await rootBundle.load(value);
-      int id = await _soundPool.load(asset);
-      soundIdMap.putIfAbsent(key, () => id);
+      await rootBundle
+          .load(value)
+          .then((asset) => _soundPool.load(asset))
+          .then((id) => soundIdMap.putIfAbsent(key, () => id));
+//      var asset = await rootBundle.load(value);
+//      int id = await _soundPool.load(asset);
+//      soundIdMap.putIfAbsent(key, () => id);
     });
 
     return soundIdMap;
