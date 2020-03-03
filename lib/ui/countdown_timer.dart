@@ -1,5 +1,7 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lttimer/ui/header.dart';
 import 'package:lttimer/ui/timer_painter.dart';
 
@@ -64,10 +66,17 @@ class _CountDownTimer extends State<CountDownTimer>
         if (status == AnimationStatus.completed) {
           // アニメーション終了通知
           if (animationController.value == 0.0) {
+            if (!kIsWeb) {
+              HapticFeedback.vibrate();
+            }
             _playSound(1);
           }
         }
+      })
+      ..addListener(() {
+        setState(() {});
       });
+
     // 初期値を1.0(100%)に設定
     animationController.value = 1.0;
     _assetsAudioPlayer = AssetsAudioPlayer();
@@ -165,26 +174,20 @@ class _CountDownTimer extends State<CountDownTimer>
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  FloatingActionButton(
-                    child: AnimatedBuilder(
-                        animation: animationController,
-                        builder: (_, child) {
-                          return Icon(animationController.isAnimating
-                              ? Icons.pause
-                              : Icons.play_arrow);
-                        }),
-                    onPressed: () {
-                      _playSound(0); // iOS(iPadOS)でサウンド再生されない対策
-                      if (animationController.isAnimating) {
-                        animationController.stop();
-                      } else {
-                        animationController.reverse(
-                            from: animationController.value == 0.0
-                                ? 1.0
-                                : animationController.value);
-                      }
-                    },
-                    backgroundColor: Colors.green,
+                  RaisedButton.icon(
+                    onPressed: animationController.isAnimating
+                        ? null
+                        : () {
+                            _playSound(0);
+                            animationController.reverse(
+                                from: animationController.value == 0.0
+                                    ? 1.0
+                                    : animationController.value);
+                          },
+                    icon: Icon(Icons.play_arrow),
+                    label: Text('Play'),
+                    color: Colors.green,
+                    textColor: Colors.white,
                   ),
                 ],
               ),
