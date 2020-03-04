@@ -162,7 +162,7 @@ class _CountDownTimer extends State<CountDownTimer>
                                   timerString,
                                   style: TextStyle(
                                     fontFamily: 'DSEG14Classic-Regular',
-                                    fontSize: 60,
+                                    fontSize: 48,
                                     color: animationController.value < 0.2
                                         ? Colors.red
                                         : Theme.of(context)
@@ -196,7 +196,12 @@ class _CountDownTimer extends State<CountDownTimer>
                                     : animationController.value);
                           },
                     icon: Icon(Icons.play_arrow),
-                    label: Text('Play'),
+                    label: Text(
+                      'PLAY',
+                      style: TextStyle(
+                        fontFamily: 'DSEG14Classic-Regular',
+                      ),
+                    ),
                     color: Colors.green,
                     textColor: Colors.white,
                   ),
