@@ -49,9 +49,13 @@ class _CountDownTimer extends State<CountDownTimer>
   ///
   /// 残り時間を「99:99.9」形式の文字列で返す
   String get timerString {
-    Duration duration =
-        animationController.duration * animationController.value;
-    return '${(duration.inMinutes % 60).toString().padLeft(2, '0')}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}.${((duration.inMilliseconds % 1000) ~/ 100).toString()}';
+    if (animationController.value <= 0.0) {
+      return 'TIME UP';
+    } else {
+      Duration duration =
+          animationController.duration * animationController.value;
+      return '${(duration.inMinutes % 60).toString().padLeft(2, '0')}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}.${((duration.inMilliseconds % 1000) ~/ 100).toString()}';
+    }
   }
 
   ///
@@ -67,8 +71,7 @@ class _CountDownTimer extends State<CountDownTimer>
     )
       ..addStatusListener((status) {
         // アニメーションの状態変更通知
-        if (status == AnimationStatus.completed &&
-            animationController.value <= 0.0) {
+        if (animationController.value <= 0.0) {
           // アニメーション終了通知
           _playSound('dora');
           Vibration.vibrate(
