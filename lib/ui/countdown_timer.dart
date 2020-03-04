@@ -1,9 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lttimer/ui/header.dart';
 import 'package:lttimer/ui/timer_painter.dart';
 import 'package:soundpool/soundpool.dart';
+import 'package:vibration/vibration.dart';
 
 ///
 /// カウントダウンタイマクラス
@@ -65,12 +65,10 @@ class _CountDownTimer extends State<CountDownTimer>
         // アニメーションの状態変更通知
         if (status == AnimationStatus.completed) {
           // アニメーション終了通知
-          if (animationController.value == 0.0) {
-            if (!kIsWeb) {
-              HapticFeedback.vibrate();
-            }
-            _playSound('dora');
-          }
+          Vibration.vibrate(
+            pattern: [0, 1000, 500, 1000, 500, 1000],
+          );
+          _playSound('dora');
         }
       })
       ..addListener(() {
