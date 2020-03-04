@@ -25,7 +25,7 @@ class CountDownTimer extends StatefulWidget {
 ///
 /// カウントダウンタイマ 内部クラス
 class _CountDownTimer extends State<CountDownTimer>
-    with TickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   ///
   /// コンストラクタ
   /// @param duration タイマ初期時間
@@ -87,6 +87,16 @@ class _CountDownTimer extends State<CountDownTimer>
   }
 
   ///
+  /// タイマ時間を設定する
+  /// @param duration タイマ時間
+  void setDuration(Duration duration) {
+    animationController.stop();
+    animationController.value = 1.0;
+    animationController.duration = duration;
+    setState(() {});
+  }
+
+  ///
   /// オブジェクト破棄処理
   @override
   void dispose() {
@@ -126,16 +136,15 @@ class _CountDownTimer extends State<CountDownTimer>
                           builder: (context, child) {
                             return CustomPaint(
                               painter: TimerPainter(
-                                  animation: animationController,
-                                  // タイマの背景色(残り時間)
-                                  backgroundColor:
-                                      animationController.value < 0.2
-                                          ? Colors.redAccent
-                                          : Theme.of(context).accentColor,
-                                  color: animationController.value < 0.2
-                                      ? Colors.yellowAccent
-                                      : Theme.of(context)
-                                          .scaffoldBackgroundColor),
+                                animation: animationController,
+                                // タイマの背景色(残り時間)
+                                backgroundColor: animationController.value < 0.2
+                                    ? Colors.redAccent
+                                    : Theme.of(context).accentColor,
+                                color: animationController.value < 0.2
+                                    ? Colors.yellowAccent
+                                    : Theme.of(context).scaffoldBackgroundColor,
+                              ),
                             );
                           },
                         ),
@@ -173,7 +182,6 @@ class _CountDownTimer extends State<CountDownTimer>
               ),
             ),
             Container(
-              margin: EdgeInsets.all(16.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[

@@ -28,7 +28,7 @@ class TimerPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()
       ..color = backgroundColor
-      ..strokeWidth = 5.0
+      ..strokeWidth = 3.0
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
 
@@ -37,6 +37,7 @@ class TimerPainter extends CustomPainter {
     // 残り時間を描画色で弧を描画する
     paint.color = color;
     double progress = (1.0 - animation.value) * 2 * pi;
+    paint.strokeWidth = 6.0;
     canvas.drawArc(Offset.zero & size, pi * 1.5, -progress, false, paint);
   }
 
