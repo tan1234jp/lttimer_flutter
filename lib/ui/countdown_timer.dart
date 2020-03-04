@@ -60,15 +60,20 @@ class _CountDownTimer extends State<CountDownTimer>
   void initState() {
     super.initState();
     // アニメーションのインスタンスを生成する（5分で終了）
-    animationController = AnimationController(vsync: this, duration: duration)
+    animationController = AnimationController(
+      vsync: this,
+      duration: duration,
+      value: 1.0,
+    )
       ..addStatusListener((status) {
         // アニメーションの状態変更通知
-        if (status == AnimationStatus.completed) {
+        if (status == AnimationStatus.completed &&
+            animationController.value <= 0.0) {
           // アニメーション終了通知
+          _playSound('dora');
           Vibration.vibrate(
             pattern: [0, 1000, 500, 1000, 500, 1000],
           );
-          _playSound('dora');
         }
       })
       ..addListener(() {
