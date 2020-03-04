@@ -1,9 +1,9 @@
-import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lttimer/ui/header.dart';
 import 'package:lttimer/ui/timer_painter.dart';
+import 'package:soundpool/soundpool.dart';
 
 ///
 /// カウントダウンタイマクラス
@@ -37,14 +37,14 @@ class _CountDownTimer extends State<CountDownTimer>
   /// アニメーションコントロール
   AnimationController animationController;
 
-  /// オーディオプレイヤ
-  AssetsAudioPlayer _assetsAudioPlayer;
+  /// サウンドプールオブジェクト
+  Soundpool _soundPool;
 
-  /// サウンドマップ定義
-  var _soundsMap = <String, String>{
-    'silent': 'assets/audios/silent.mp3',
-    'dora': 'assets/audios/dora.mp3',
-  };
+  /// サウンドプールに読み込まれたサウンドIDオブジェクト
+  Future<Map<String, int>> _soundId;
+
+  /// 再生中のサウンドIDオブジェクト
+  int _alarmSoundStreamId;
 
   ///
   /// 残り時間を「99:99.9」形式の文字列で返す
@@ -69,7 +69,7 @@ class _CountDownTimer extends State<CountDownTimer>
             if (!kIsWeb) {
               HapticFeedback.vibrate();
             }
-            _playSound(1);
+            _playSound('dora');
           }
         }
       })
@@ -79,8 +79,11 @@ class _CountDownTimer extends State<CountDownTimer>
 
     // 初期値を1.0(100%)に設定
     animationController.value = 1.0;
-    _assetsAudioPlayer = AssetsAudioPlayer();
-    _loadSound(_soundsMap);
+    _soundPool = Soundpool();
+    _soundId = _loadSound(<String, String>{
+      'silent': 'assets/audios/silent.mp3',
+      'dora': 'assets/audios/dora.mp3',
+    });
   }
 
   ///
@@ -88,7 +91,7 @@ class _CountDownTimer extends State<CountDownTimer>
   @override
   void dispose() {
     animationController.dispose();
-    _assetsAudioPlayer.dispose();
+    _soundPool.dispose();
     super.dispose();
   }
 
@@ -178,7 +181,7 @@ class _CountDownTimer extends State<CountDownTimer>
                     onPressed: animationController.isAnimating
                         ? null
                         : () {
-                            _playSound(0);
+                            _playSound('silent');
                             animationController.reverse(
                                 from: animationController.value == 0.0
                                     ? 1.0
@@ -201,20 +204,41 @@ class _CountDownTimer extends State<CountDownTimer>
   ///
   /// サウンドデータをロードする
   /// @param soundMap : <Key,assetファイル名>のMapオブジェクト
-  void _loadSound(Map<String, String> soundMap) {
-    var soundList = <String>[];
-    soundMap.forEach((key, value) {
-      soundList.add(value);
+  /// @return Future<Map<String, int>> : <Key, 読みこんだサウンドデータのID>のMapオブジェクト
+  Future<Map<String, int>> _loadSound(Map<String, String> soundMap) async {
+    var soundIdMap = <String, int>{};
+    soundMap.forEach((key, value) async {
+      await rootBundle
+          .load(value) // assetにあるサウンドデータを読み込む
+          .then((asset) => _soundPool.load(asset)) // 読み込んだデータをサウンドプールに格納する
+          .then((id) => soundIdMap.putIfAbsent(
+              key, () => id)); // サウンドプールから割り当てられたIDをMapに登録する
     });
-    _assetsAudioPlayer.openPlaylist(Playlist(
-      assetAudioPaths: soundList,
-    ));
+    return soundIdMap;
   }
 
   ///
   /// サウンドを再生する
-  /// @param index : プレイリストのインデックス番号
-  void _playSound(int index) {
-    _assetsAudioPlayer.playlistPlayAtIndex(index);
+  /// @param key : 再生するサウンドのキー文字列
+  Future<void> _playSound(String types) async {
+    if (_soundId != null) {
+      var _alarmSound = await _soundId.then(
+          (value) => (value == null ? null : value[types])); // キーからIDを取得する
+      // 取得したIDでサウンドを再生する
+      // 再生中のサウンドは停止する
+      if (_alarmSound != null) {
+        await _stopSound();
+        _alarmSoundStreamId = await _soundPool.play(_alarmSound);
+      }
+    }
+  }
+
+  ///
+  /// サウンドを停止する
+  Future<void> _stopSound() async {
+    if (_alarmSoundStreamId != null) {
+      await _soundPool.stop(_alarmSoundStreamId);
+      _alarmSoundStreamId = null;
+    }
   }
 }
