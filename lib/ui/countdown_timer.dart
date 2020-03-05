@@ -35,7 +35,7 @@ class _CountDownTimer extends State<CountDownTimer>
   final Duration duration;
 
   /// アニメーションコントロール
-  AnimationController animationController;
+  AnimationController _animationController;
 
   /// サウンドプールオブジェクト
   Soundpool _soundPool;
@@ -49,11 +49,11 @@ class _CountDownTimer extends State<CountDownTimer>
   ///
   /// 残り時間を「99:99.9」形式の文字列で返す
   String get timerString {
-    if (animationController.value <= 0.0) {
+    if (_animationController.value <= 0.0) {
       return 'TIME UP';
     } else {
       Duration duration =
-          animationController.duration * animationController.value;
+          _animationController.duration * _animationController.value;
       return '${(duration.inMinutes % 60).toString().padLeft(2, '0')}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}.${((duration.inMilliseconds % 1000) ~/ 100).toString()}';
     }
   }
@@ -64,28 +64,26 @@ class _CountDownTimer extends State<CountDownTimer>
   void initState() {
     super.initState();
     // アニメーションのインスタンスを生成する（5分で終了）
-    animationController = AnimationController(
+    _animationController = AnimationController(
       vsync: this,
       duration: duration,
       value: 1.0,
-    )
-      ..addStatusListener((status) {
-        // アニメーションの状態変更通知
-        if (animationController.value <= 0.0) {
+    )..addListener(() {
+        if (_animationController.value <= 0.0) {
           // アニメーション終了通知
           _playSound('dora');
           Vibration.vibrate(
             pattern: [0, 1000, 500, 1000, 500, 1000],
           );
         }
-      })
-      ..addListener(() {
         setState(() {});
       });
 
     // 初期値を1.0(100%)に設定
-    animationController.value = 1.0;
+    _animationController.value = 1.0;
+    // サウンドプールの初期化
     _soundPool = Soundpool();
+    // アセットからデータ読み込み
     _soundId = _loadSound(<String, String>{
       'silent': 'assets/audios/silent.mp3',
       'dora': 'assets/audios/dora.mp3',
@@ -96,9 +94,9 @@ class _CountDownTimer extends State<CountDownTimer>
   /// タイマ時間を設定する
   /// @param duration タイマ時間
   void setDuration(Duration duration) {
-    animationController.stop();
-    animationController.value = 1.0;
-    animationController.duration = duration;
+    _animationController.stop();
+    _animationController.value = 1.0;
+    _animationController.duration = duration;
     setState(() {});
   }
 
@@ -106,7 +104,7 @@ class _CountDownTimer extends State<CountDownTimer>
   /// オブジェクト破棄処理
   @override
   void dispose() {
-    animationController.dispose();
+    _animationController.dispose();
     _soundPool.dispose();
     super.dispose();
   }
@@ -119,8 +117,8 @@ class _CountDownTimer extends State<CountDownTimer>
   Widget build(BuildContext context) {
     return Scaffold(
       // 背景色
-      // 残り時間が20%(1分)未満の場合は黄色に、それ以外はテーマの背景色に設定
-      backgroundColor: animationController.value < 0.2
+      // 残り時間が20%未満の場合は黄色に、それ以外はテーマの背景色に設定
+      backgroundColor: _animationController.value < 0.2
           ? Colors.yellowAccent
           : Theme.of(context).scaffoldBackgroundColor,
       // アプリケーションヘッダ
@@ -138,16 +136,17 @@ class _CountDownTimer extends State<CountDownTimer>
                     children: <Widget>[
                       Positioned.fill(
                         child: AnimatedBuilder(
-                          animation: animationController,
+                          animation: _animationController,
                           builder: (context, child) {
                             return CustomPaint(
                               painter: TimerPainter(
-                                animation: animationController,
+                                animation: _animationController,
                                 // タイマの背景色(残り時間)
-                                backgroundColor: animationController.value < 0.2
-                                    ? Colors.redAccent
-                                    : Theme.of(context).accentColor,
-                                color: animationController.value < 0.2
+                                backgroundColor:
+                                    _animationController.value < 0.2
+                                        ? Colors.redAccent
+                                        : Theme.of(context).accentColor,
+                                color: _animationController.value < 0.2
                                     ? Colors.yellowAccent
                                     : Theme.of(context).scaffoldBackgroundColor,
                               ),
@@ -162,14 +161,14 @@ class _CountDownTimer extends State<CountDownTimer>
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             AnimatedBuilder(
-                              animation: animationController,
+                              animation: _animationController,
                               builder: (_, child) {
                                 return Text(
                                   timerString,
                                   style: TextStyle(
                                     fontFamily: 'DSEG14Classic-Regular',
                                     fontSize: 48,
-                                    color: animationController.value < 0.2
+                                    color: _animationController.value < 0.2
                                         ? Colors.red
                                         : Theme.of(context)
                                             .primaryTextTheme
@@ -192,14 +191,14 @@ class _CountDownTimer extends State<CountDownTimer>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   RaisedButton.icon(
-                    onPressed: animationController.isAnimating
+                    onPressed: _animationController.isAnimating
                         ? null
                         : () {
                             _playSound('silent');
-                            animationController.reverse(
-                                from: animationController.value == 0.0
+                            _animationController.reverse(
+                                from: _animationController.value == 0.0
                                     ? 1.0
-                                    : animationController.value);
+                                    : _animationController.value);
                           },
                     icon: Icon(Icons.play_arrow),
                     label: Text(
@@ -228,7 +227,7 @@ class _CountDownTimer extends State<CountDownTimer>
     var soundIdMap = <String, int>{};
     soundMap.forEach((key, value) async {
       await rootBundle
-          .load(value) // assetにあるサウンドデータを読み込む
+          .load(value) // アセットにあるサウンドデータを読み込む
           .then((asset) => _soundPool.load(asset)) // 読み込んだデータをサウンドプールに格納する
           .then((id) => soundIdMap.putIfAbsent(
               key, () => id)); // サウンドプールから割り当てられたIDをMapに登録する
