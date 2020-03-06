@@ -94,8 +94,8 @@ Demonstration page is [here](https://tan1234jp.github.io/).
 
 | Browser | Version | Condition  |
 | ------- | ------- | ---------- |
-| Chrome  |         | RUNNING[^1] |
-| Safari  |         | RUNNING[^1] |
+| Chrome  |         | RUNNING<sup>[1](#footnote1)</sup> |
+| Safari  |         | RUNNING<sup>[1](#footnote1)</sup> |
 |         |         |            |
 
-[^1]: Vibration not supported.
+<a name="footnote1">1</a>: Vibration not supported.
