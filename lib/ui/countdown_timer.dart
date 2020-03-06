@@ -128,6 +128,7 @@ class _CountDownTimer extends State<CountDownTimer>
         child: Column(
           children: <Widget>[
             Expanded(
+              flex: 7,
               child: Align(
                 alignment: FractionalOffset.center,
                 child: AspectRatio(
@@ -186,31 +187,34 @@ class _CountDownTimer extends State<CountDownTimer>
                 ),
               ),
             ),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  RaisedButton.icon(
-                    onPressed: _animationController.isAnimating
-                        ? null
-                        : () {
-                            _playSound('silent');
-                            _animationController.reverse(
-                                from: _animationController.value == 0.0
-                                    ? 1.0
-                                    : _animationController.value);
-                          },
-                    icon: Icon(Icons.play_arrow),
-                    label: Text(
-                      'PLAY',
-                      style: TextStyle(
-                        fontFamily: 'DSEG14Classic-Regular',
+            Expanded(
+              flex: 3,
+              child: Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    RaisedButton.icon(
+                      onPressed: _animationController.isAnimating
+                          ? null
+                          : () {
+                              _playSound('silent');
+                              _animationController.reverse(
+                                  from: _animationController.value == 0.0
+                                      ? 1.0
+                                      : _animationController.value);
+                            },
+                      icon: Icon(Icons.play_arrow),
+                      label: Text(
+                        'PLAY',
+                        style: TextStyle(
+                          fontFamily: 'DSEG14Classic-Regular',
+                        ),
                       ),
+                      color: Colors.green,
+                      textColor: Colors.white,
                     ),
-                    color: Colors.green,
-                    textColor: Colors.white,
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
