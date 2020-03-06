@@ -10,7 +10,7 @@ class AppHeader extends StatelessWidget with PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text('LT Timer'),
+      title: const Text('LT Timer'),
       centerTitle: true,
       elevation: 0,
     );

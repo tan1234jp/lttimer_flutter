@@ -21,7 +21,7 @@ class LTTimerApp extends StatelessWidget {
         // テーマ指定
         primarySwatch: Colors.lightBlue,
       ),
-      home: CountDownTimer(Duration(minutes: 5, seconds: 0)),
+      home: CountDownTimer(const Duration(minutes: 5, seconds: 0)),
     );
   }
 }

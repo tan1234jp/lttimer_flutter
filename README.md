@@ -98,4 +98,4 @@ Demonstration page is [here](https://tan1234jp.github.io/).
 | Safari  |         | RUNNING[^1] |
 |         |         |            |
 
-[^1]:Vibration not supported.
+[^1]: Vibration not supported.

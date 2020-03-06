@@ -124,7 +124,7 @@ class _CountDownTimer extends State<CountDownTimer>
       // アプリケーションヘッダ
       appBar: AppHeader(),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: <Widget>[
             Expanded(
@@ -204,7 +204,7 @@ class _CountDownTimer extends State<CountDownTimer>
                                       : _animationController.value);
                             },
                       icon: Icon(Icons.play_arrow),
-                      label: Text(
+                      label: const Text(
                         'PLAY',
                         style: TextStyle(
                           fontFamily: 'DSEG14Classic-Regular',
