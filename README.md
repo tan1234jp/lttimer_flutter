@@ -2,6 +2,8 @@
 
 Lightning-Talk Timer Application.
 
+Demonstration page is [here](https://tan1234jp.github.io/).
+
 ## インストール・設定
 
 [公式ページ](https://flutter.dev/docs/get-started/install)の手順に従ってインストール・設定してください。なお、web applicationのビルドには追加で[こちら](https://flutter.dev/docs/get-started/web)の設定が必要となります。
@@ -54,7 +56,7 @@ Lightning-Talk Timer Application.
 - Build projects.
 
   ```sh
-  $ flutter build <apk/ios/web>
+  $ flutter build <apk/aab/ios/web>
   ```
 
 ------
@@ -74,7 +76,7 @@ Lightning-Talk Timer Application.
 | ------------------- | ----------------------------- | ---------- |
 | Chrome              | 80.0.3987.122(64bit)          | RUNNING    |
 | Firefox             | 72.0.2 (64bit)                | RUNNING |
-| Internet Explorer   | 11.535.18362.0(11.0.165)      | <font color='red'>NOT RUNNING</font> |
+| Internet Explorer   | 11.535.18362.0(11.0.165)      | NOT RUNNING |
 | Microsoft Edge      | 44.18362.449.0(HTML 18.18362) | RUNNING |
 | Safari (MacOS ONLY) |                               | NOT TESTED |
 |                     |                               |            |
@@ -84,7 +86,7 @@ Lightning-Talk Timer Application.
 | OS      | Version           | Condition  |
 | ------- | ----------------- | ---------- |
 | Android | 8.1(API Level 26) | RUNNING    |
-| iOS     | 13.1.3            | NOT TESTED |
+| iOS     | 13.1.3            | RUNNING |
 | iPadOS  | 13.1.3            | NOT TESTED |
 |         |                   |            |
 
@@ -92,7 +94,8 @@ Lightning-Talk Timer Application.
 
 | Browser | Version | Condition  |
 | ------- | ------- | ---------- |
-| Chrome  |         | NOT TESTED |
-| Safari  |         | NOT TESTED |
+| Chrome  |         | RUNNING[^1] |
+| Safari  |         | RUNNING[^1] |
 |         |         |            |
 
+[^1]:Vibration not supported.
