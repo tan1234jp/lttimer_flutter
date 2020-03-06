@@ -2,7 +2,7 @@
     "name": "lttimer",
     "short_name": "lttimer",
     "start_url": ".",
-    "display": "minimal-ui",
+    "display": "standalone",
     "theme_color": "#ffffff",
     "background_color": "#ffffff",
     "description": "Lightning-Talk Timer Application",
