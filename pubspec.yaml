@@ -25,9 +25,6 @@ dependencies:
   cupertino_icons: ^0.1.2
   soundpool: ^1.0.1
   vibration: ^1.2.4
-  percent_indicator: ^2.1.1+1
-  provider: ^4.0.4
-  tuple: ^1.0.3
 
 dev_dependencies:
   flutter_test:
