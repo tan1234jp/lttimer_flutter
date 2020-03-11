@@ -28,10 +28,7 @@ Demonstration page is [here](https://tan1234jp.github.io/).
   ```sh
   $ flutter build <apk/ios/web>
   ```
-
-  
-
-------
+---
 
 ## Getting Started
 
@@ -61,23 +58,23 @@ Demonstration page is [here](https://tan1234jp.github.io/).
 
 ------
 
-## Running information
+## Running information (11-Mar-2020)
 
 ### Flatter & Dart version
 
-| SDK  | Version |
-|---|---|
+| SDK      | Version              |
+|----------|----------------------|
 | Flatter  | 1.14.6 (Channel beta)|
-| Dart | 2.8.0|
+| Dart     | 2.8.0                |
 
 ### Desktop
 
 | Browser             | Version                       | Condition  |
 | ------------------- | ----------------------------- | ---------- |
-| Chrome              | 80.0.3987.122(64bit)          | RUNNING    |
-| Firefox             | 72.0.2 (64bit)                | RUNNING |
-| Internet Explorer   | 11.535.18362.0(11.0.165)      | NOT RUNNING |
-| Microsoft Edge      | 44.18362.449.0(HTML 18.18362) | RUNNING |
+| Chrome              | 80.0.3987.132(official 64bit) | RUNNING    |
+| Firefox             | 72.0.2(64bit)                 | RUNNING    |
+| Internet Explorer   | 11.535.18362.0(11.0.165)      | NOT RUNNING|
+| Microsoft Edge      | 44.18362.449.0(HTML 18.18362) | RUNNING    |
 | Safari (MacOS ONLY) |                               | NOT TESTED |
 |                     |                               |            |
 
@@ -85,17 +82,23 @@ Demonstration page is [here](https://tan1234jp.github.io/).
 
 | OS      | Version           | Condition  |
 | ------- | ----------------- | ---------- |
-| Android | 8.1(API Level 26) | RUNNING    |
-| iOS     | 13.1.3            | RUNNING |
-| iPadOS  | 13.1.3            | NOT TESTED |
+| Android | 8.1               | RUNNING    |
+| Android | 9.0               | RUNNING    |
+| Android | 10.0              | RUNNING    |
+| iOS     | 13.3              | RUNNING    |
+| iOS     | 13.3.1            | NOT RUNNING<sup>[1](#footnote1)</sup> |
+| iPadOS  | 13.3              | NOT TESTED |
+| iPadOS  | 13.3.1            | NOT RUNNING<sup>[1](#footnote1)</sup> |
 |         |                   |            |
+
+<a name="footnote1">1</a>: Running new app on actual iOS/iPad OS(13.3.1) device crashes on startup. See [flutter issues](https://github.com/flutter/flutter/issues/49504).
 
 ### Mobile(Web)
 
 | Browser | Version | Condition  |
 | ------- | ------- | ---------- |
-| Chrome  |         | RUNNING<sup>[1](#footnote1)</sup> |
-| Safari  |         | RUNNING<sup>[1](#footnote1)</sup> |
+| Chrome  |         | RUNNING<sup>[2](#footnote2)</sup> |
+| Safari  |         | RUNNING<sup>[2](#footnote2)</sup> |
 |         |         |            |
 
-<a name="footnote1">1</a>: Vibration not supported.
+<a name="footnote2">2</a>: Vibration not supported.
