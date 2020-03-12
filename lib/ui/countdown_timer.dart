@@ -19,7 +19,8 @@ class CountDownTimer extends StatefulWidget {
   ///
   /// StatefulWidgetオブジェクトを生成する
   @override
-  _CountDownTimer createState() => _CountDownTimer(duration);
+//  _CountDownTimer createState() => _CountDownTimer(duration);
+  _CountDownTimer createState() => _CountDownTimer();
 }
 
 ///
@@ -29,10 +30,10 @@ class _CountDownTimer extends State<CountDownTimer>
   ///
   /// コンストラクタ
   /// @param duration タイマ初期時間
-  _CountDownTimer(this.duration);
+//  _CountDownTimer(this.duration);
 
   /// タイマ初期時間
-  final Duration duration;
+//  final Duration duration;
 
   /// アニメーションコントロール
   AnimationController _animationController;
@@ -63,10 +64,10 @@ class _CountDownTimer extends State<CountDownTimer>
   @override
   void initState() {
     super.initState();
-    // アニメーションのインスタンスを生成する（5分で終了）
+    // アニメーションのインスタンスを生成する
     _animationController = AnimationController(
       vsync: this,
-      duration: duration,
+      duration: widget.duration,
       value: 1.0,
     )..addListener(() {
         if (_animationController.value <= 0.0) {
@@ -80,7 +81,9 @@ class _CountDownTimer extends State<CountDownTimer>
       });
 
     // 初期値を1.0(100%)に設定
-    _animationController.value = 1.0;
+    setState(() {
+      _animationController.value = 1.0;
+    });
     // サウンドプールの初期化
     _soundPool = Soundpool();
     // アセットからデータ読み込み
@@ -95,9 +98,10 @@ class _CountDownTimer extends State<CountDownTimer>
   /// @param duration タイマ時間
   void setDuration(Duration duration) {
     _animationController.stop();
-    _animationController.value = 1.0;
-    _animationController.duration = duration;
-    setState(() {});
+    setState(() {
+      _animationController.value = 1.0;
+      _animationController.duration = duration;
+    });
   }
 
   ///
@@ -258,6 +262,7 @@ class _CountDownTimer extends State<CountDownTimer>
   ///
   /// サウンドを停止する
   Future<void> _stopSound() async {
+    // 再生中の場合は停止する
     if (_alarmSoundStreamId != null) {
       await _soundPool.stop(_alarmSoundStreamId);
       _alarmSoundStreamId = null;

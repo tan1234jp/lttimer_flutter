@@ -53,7 +53,7 @@ Demonstration page is [here](https://tan1234jp.github.io/).
 - Build projects.
 
   ```sh
-  $ flutter build <apk/aab/ios/web>
+  $ flutter build <apk/ios/web>
   ```
 
 ------
@@ -72,7 +72,7 @@ Demonstration page is [here](https://tan1234jp.github.io/).
 | Browser             | Version                       | Condition  |
 | ------------------- | ----------------------------- | ---------- |
 | Chrome              | 80.0.3987.132(official 64bit) | RUNNING    |
-| Firefox             | 72.0.2(64bit)                 | RUNNING    |
+| Firefox             | 74.0(64bit)                   | RUNNING    |
 | Internet Explorer   | 11.535.18362.0(11.0.165)      | NOT RUNNING|
 | Microsoft Edge      | 44.18362.449.0(HTML 18.18362) | RUNNING    |
 | Safari (MacOS ONLY) |                               | NOT TESTED |
