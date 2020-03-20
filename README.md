@@ -2,11 +2,11 @@
 
 Lightning-Talk Timer Application.
 
-Demonstration page is [here](https://tan1234jp.github.io/).
+[Demonstration page is here.](https://tan1234jp.github.io/)
 
 ## インストール・設定
 
-[公式ページ](https://flutter.dev/docs/get-started/install)の手順に従ってインストール・設定してください。なお、web applicationのビルドには追加で[こちら](https://flutter.dev/docs/get-started/web)の設定が必要となります。
+[公式ページ](https://flutter.dev/docs/get-started/install)の手順に従ってインストール・設定してください。なお、web applicationのビルドには[追加の設定が必要](https://flutter.dev/docs/get-started/web)となります。
 
 ### ビルドおよび実行方法
 
@@ -58,23 +58,23 @@ Demonstration page is [here](https://tan1234jp.github.io/).
 
 ------
 
-## Running information (11-Mar-2020)
+## Running information (20-Mar-2020)
 
 ### Flatter & Dart version
 
 | SDK      | Version              |
 |----------|----------------------|
-| Flatter  | 1.14.6 (Channel beta)|
+| Flatter  | 1.15.7 (Channel beta)|
 | Dart     | 2.8.0                |
 
 ### Desktop
 
 | Browser             | Version                       | Condition  |
 | ------------------- | ----------------------------- | ---------- |
-| Chrome              | 80.0.3987.132(official 64bit) | RUNNING    |
+| Chrome              | 80.0.3987.149(official 64bit) | RUNNING    |
 | Firefox             | 74.0(64bit)                   | RUNNING    |
 | Internet Explorer   | 11.535.18362.0(11.0.165)      | NOT RUNNING|
-| Microsoft Edge      | 44.18362.449.0(HTML 18.18362) | RUNNING    |
+| Microsoft Edge      | 44.18362.449.0(HTML 18.18363) | RUNNING    |
 | Safari (MacOS ONLY) |                               | NOT TESTED |
 |                     |                               |            |
 
