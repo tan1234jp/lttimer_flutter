@@ -2,8 +2,6 @@
 
 Lightning-Talk Timer Application.
 
-[Web版のデモページはこちら。](https://tan1234jp.github.io/)
-
 ## インストール・設定
 
 [公式ページ](https://flutter.dev/docs/get-started/install)の手順に従ってインストール・設定してください。なお、web applicationのビルドには[追加の設定が必要](https://flutter.dev/docs/get-started/web)となります。
