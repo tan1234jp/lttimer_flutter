@@ -2,8 +2,6 @@
 
 Lightning-Talk Timer Application.
 
-[Demonstration page is here.](https://tan1234jp.github.io/)
-
 ## Getting Started
 
 - [Get the Flutter SDK](https://flutter.dev/docs/get-started/install)
